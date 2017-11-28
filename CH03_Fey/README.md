@@ -1,4 +1,4 @@
-# Material for the exercise in Chapter 12
+# Material for the exercise in Chapter 3
 
 Last modification: 27.11.2017
 

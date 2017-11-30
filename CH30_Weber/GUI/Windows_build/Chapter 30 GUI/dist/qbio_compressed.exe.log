@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "qbio_compressed.pyw", line 5158, in <module>
+  File "qbio_compressed.pyw", line 5145, in main
+  File "Tkinter.pyc", line 1694, in wm_iconbitmap
+_tkinter.TclError: bitmap "qbio_icon_9nD_icon.ico" not defined
+Traceback (most recent call last):
+  File "qbio_compressed.pyw", line 5158, in <module>
+  File "qbio_compressed.pyw", line 5145, in main
+  File "Tkinter.pyc", line 1694, in wm_iconbitmap
+_tkinter.TclError: bitmap "qbio_icon_9nD_icon.ico" not defined
+Traceback (most recent call last):
+  File "qbio_compressed.pyw", line 5158, in <module>
+  File "qbio_compressed.pyw", line 5145, in main
+  File "Tkinter.pyc", line 1694, in wm_iconbitmap
+_tkinter.TclError: bitmap "qbio_icon_9nD_icon.ico" not defined
+Traceback (most recent call last):
+  File "qbio_compressed.pyw", line 48, in <module>
+NameError: name 'os' is not defined
+Traceback (most recent call last):
+  File "qbio_compressed.pyw", line 48, in <module>
+NameError: name 'os' is not defined

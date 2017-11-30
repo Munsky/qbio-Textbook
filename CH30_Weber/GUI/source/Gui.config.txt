@@ -1,0 +1,48 @@
+filepath =C:/Users/William/Desktop/mRNA_Hist.csv
+S1 = 1
+
+S2 = 0
+
+S3 = 0
+
+Rna = 0
+
+t0 = 0
+
+tf = 100
+
+input = (1-cos(2*3.14/30*t))*(t>5)*(t<70)
+
+k12_e = 1
+
+k23_e = 1
+
+k21_e = .5
+
+k32_e = .5
+
+kr2_e = 2
+
+kr3_e = .5
+
+gamma = .2
+
+beta = 1
+
+mink12 = 0.1
+mink23 = 0.1
+mink21 = -2.0
+mink32 = 0.1
+minkr2 = 0.1
+minkr3 = 0.1
+miny = 0.1
+minb = -2.0
+maxk12 = 30.0
+maxk23 = 30.0
+maxk21 = 10.0
+maxk32 = 30.0
+maxkr2 = 30.0
+maxkr3 = 30.0
+maxy = 30.0
+maxb = 0.1
+helpon = 1

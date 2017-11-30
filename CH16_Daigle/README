@@ -1,0 +1,17 @@
+Code and models for Chapter 16: Bayesian Parameter Estimation and Markov Chain Monte Carlo
+
+This directory contains command line executable scripts and SBML model files needed to execute the examples listed in Chapter 16. These scripts require a Linux/MacOS environment with the bash shell, as well as working installations of the R, Perl, and Python programming languages. To obtain information on the usage of a script, simply run it with no arguments. Before using, please complete the following:
+
+* Install R package SBMLR (http://bioconductor.org/packages/SBMLR/)
+* Install R package coda (https://cran.r-project.org/package=coda)
+* Install R package smfsb (https://cran.r-project.org/package=smfsb)
+* Download and unzip source package gillespie (https://www.staff.ncl.ac.uk/d.j.wilkinson/software/gillespie.tgz) in this directory
+* Move gillespie.patch and discretise.patch into gillespie/src/ directory
+* Apply patches by running "patch < gillespie.patch" and "patch < discretise.patch"
+* Compile source package gillespie (see gillespie/README.txt for details)
+* Download and unzip source package stochInf (https://www.staff.ncl.ac.uk/d.j.wilkinson/software/stochInf.tgz) in this directory
+* Move init-r.patch and mod.patch into stochInf/src/ directory
+* Apply patches by running "patch < init-r.patch" and "patch < mod.patch"
+* Compile source package stochInf (see stochInf/README.txt for details)
+* Download Perl script tab2bugs (https://www.staff.ncl.ac.uk/d.j.wilkinson/software/tab2bugs) and place in utils directory
+* Download Python script mcmc.py (https://www.staff.ncl.ac.uk/d.j.wilkinson/software/mcmc.py) and place in utils directory

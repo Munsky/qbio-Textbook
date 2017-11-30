@@ -1,0 +1,115 @@
+--- init-r-old.c	2004-07-20 11:11:33.000000000 -0500
++++ init-r-newer.c	2015-09-16 14:06:57.600442170 -0500
+@@ -1,9 +1,9 @@
+ /*
+-init-r.c -  *** glpk 3.0.6 version ***
++init-r.c - *** glpk 4.55 version ***
+ Initialise the reaction matrix
+ 
+ "stochInf"
+-Copyright (C) 2003 Darren Wilkinson
++Copyright (C) 2004 Darren Wilkinson
+ d.j.wilkinson@ncl.ac.uk
+ http://www.staff.ncl.ac.uk/d.j.wilkinson/
+ 
+@@ -19,13 +19,15 @@
+ 
+ void initRMat(FullModel *model)
+ {
+-  int t,i,j,errcode,numReactions,numObs,rank,fildes;
++  int t,i,j,errcode,numReactions,numObs,rank,fildes,idx;
+   FILE *stream;
+   double temp;
+   gsl_vector *yVec,*vVec;
+   gsl_vector_view yVecView;
+-  LPI *lp;
++  glp_prob *lp;
+   Aux *aux;
++  int *ia,*ja;
++  double *ar;
+ 
+   if (model->info->verb>1)
+     fprintf(model->info->err,"Initialising the reaction matrix\n");
+@@ -37,6 +39,28 @@
+   aux->rMat=gsl_matrix_calloc(numObs-1,numReactions);
+   ptrChk(vVec); ptrChk(aux->rMat);
+   
++  idx=0;
++  for (i=0;i<rank;i++) {
++    for (j=0;j<numReactions-rank;j++) {
++      if ( abs(GMG(aux->BMat,i,j))>0.0001 )
++        idx++;
++    }
++  }
++  idx++; /* actually one more than the number of non-zero elts */
++  ia=malloc(idx*sizeof(int));
++  ja=malloc(idx*sizeof(int));
++  ar=malloc(idx*sizeof(double));
++  ia[0]=0;ja[0]=0;ar[0]=0.0;
++  idx=0;
++  for (i=0;i<rank;i++) {
++    for (j=0;j<numReactions-rank;j++) {
++      if ( abs(GMG(aux->BMat,i,j))>0.0001 ) {
++        idx++;
++        ia[idx]=i+1; ja[idx]=j+1; ar[idx]=GMG(aux->BMat,i,j);
++      }
++    }
++  }
++
+   /* will need to temporarily re-direct stdout */
+   stream=fopen("glpk.log","w");
+   fclose(stream);
+@@ -53,33 +77,39 @@
+     yVec=&(yVecView.vector);
+     gsl_blas_dgemv(CblasNoTrans,1.0,aux->AMatUpInvT,yVec,0.0,vVec);
+     /* glpk stuff starts here */
+-    lp=glp_create_prob(NULL);
++    lp=glp_create_prob();
+     for (j=0;j<numReactions-rank;j++) {
+-      glp_new_col(lp,NULL);
++      glp_add_cols(lp,1);
+       glp_set_obj_coef(lp,j+1,1.0);
+-      glp_set_col_kind(lp,j+1,'I');
++      glp_set_col_bnds(lp,j+1,GLP_LO,0.0,0.0);
++      glp_set_col_kind(lp,j+1,GLP_IV);
+     }
+     for (i=0;i<rank;i++) {
+-      glp_new_row(lp,NULL);
+-      glp_set_row_bnds(lp,i+1,'U',0.0,GVG(vVec,i));
+-      for (j=0;j<numReactions-rank;j++) {
+-	glp_new_aij(lp,i+1,j+1,GMG(aux->BMat,i,j));
+-      }
++      glp_add_rows(lp,1);
++      glp_set_row_bnds(lp,i+1,GLP_UP,0.0,GVG(vVec,i));
+     }
+-    glp_set_obj_sense(lp,'-');
+-
+-    errcode=glp_call_bbm1(lp,NULL);
++    glp_load_matrix(lp,idx,ia,ja,ar);
++    glp_set_obj_dir(lp,GLP_MIN);
+ 
+-    if (errcode) {
++    glp_write_prob(lp,0,"glpk.txt");
++    errcode=glp_simplex(lp,NULL);
++    if (errcode!=0) {
++      fprintf(model->info->err,"Initialisation of interval %d failed\n",t);
++      fprintf(model->info->err,"glpk simplex error code %d\n",errcode);
++      exit(EXIT_FAILURE);
++    }
++    errcode=glp_intopt(lp,NULL);
++    if (errcode!=0) {
+       fprintf(model->info->err,"Initialisation of interval %d failed\n",t);
++      fprintf(model->info->err,"glpk integer error code %d\n",errcode);
+       exit(EXIT_FAILURE);
+     }
+     for (i=0;i<rank;i++) {
+-      glp_get_row_soln(lp,i+1,NULL,&temp,NULL);
++      temp=glp_get_row_prim(lp,i+1);
+       GMS(aux->rMat,t,i,GVG(vVec,i)-temp);
+     }
+     for (j=0;j<numReactions-rank;j++) {
+-      glp_get_col_soln(lp,j+1,NULL,&temp,NULL);
++      temp=glp_get_col_prim(lp,j+1);
+       GMS(aux->rMat,t,rank+j,temp);
+     }
+     glp_delete_prob(lp);

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="1" version="1">
+
+  <model name="GeneExpressionModel">
+
+    <listOfCompartments>
+      <compartment name="Cell" volume="1"/>
+    </listOfCompartments>
+
+    <listOfSpecies>
+      <specie name="mRNA" initialAmount="5"   compartment="Cell"/>
+      <specie name="P" initialAmount="10"   compartment="Cell"/>
+    </listOfSpecies>  
+
+    <listOfParameters>
+      <parameter name="theta1" value="5"/>
+      <parameter name="theta2" value=".25"/>
+      <parameter name="theta3" value=".5"/>
+      <parameter name="theta4" value=".3"/>
+    </listOfParameters>
+
+    <listOfReactions>
+
+      <reaction name="Transcription" reversible="false">
+        <listOfProducts>
+          <specieReference specie="mRNA" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw formula="theta1"/>
+      </reaction>
+
+      <reaction name="mRNADegradation" reversible="false">
+        <listOfReactants>
+          <specieReference specie="mRNA" stoichiometry="1"/>       
+        </listOfReactants>
+        <kineticLaw formula="theta2*mRNA"/>
+      </reaction>
+
+      <reaction name="Translation" reversible="false">
+        <listOfReactants>
+          <specieReference specie="mRNA" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <specieReference specie="mRNA" stoichiometry="1"/>
+          <specieReference specie="P" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw formula="theta3*mRNA"/>
+      </reaction>
+
+      <reaction name="PDegradation" reversible="false">
+        <listOfReactants>
+          <specieReference specie="P" stoichiometry="1"/>       
+        </listOfReactants>
+        <kineticLaw formula="theta4*P"/>
+      </reaction>
+
+    </listOfReactions>
+
+  </model>
+</sbml>
+
+

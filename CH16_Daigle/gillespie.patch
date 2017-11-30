@@ -1,0 +1,12 @@
+--- gillespie.c	2004-07-14 10:02:54.000000000 -0500
++++ gillespie_new.c	2017-11-30 12:14:28.049430448 -0600
+@@ -67,9 +67,7 @@
+   
+ 
+   doc=readSBML(filename);
+-  SBMLDocument_printWarnings(doc,stderr);
+   SBMLDocument_printErrors(doc,stderr);
+-  SBMLDocument_printFatals(doc,stderr);
+   mod=SBMLDocument_getModel(doc);
+   fprintf(stderr,"model: %p \n",mod);
+   fprintf(stderr,"Filename: %s, Model name: %s, Terminal time: %f \n",

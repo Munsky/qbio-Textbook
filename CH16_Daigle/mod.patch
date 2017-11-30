@@ -1,0 +1,12 @@
+--- mod.c	2004-07-20 08:42:32.000000000 -0500
++++ mod_new.c	2017-11-30 12:18:47.083524416 -0600
+@@ -145,9 +145,7 @@
+   ptrChk(simod);
+   
+   doc=readSBML(modFile);
+-  SBMLDocument_printWarnings(doc,stderr);
+   SBMLDocument_printErrors(doc,stderr);
+-  SBMLDocument_printFatals(doc,stderr);
+   mod=SBMLDocument_getModel(doc);
+ 
+   /* record array sizes */

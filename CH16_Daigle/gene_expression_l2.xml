@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<sbml xmlns="http://www.sbml.org/sbml/level1" level="2" version="1">
+
+  <model id="GeneExpressionModel">
+
+    <listOfCompartments>
+      <compartment id="Cell" size="1"/>
+    </listOfCompartments>
+
+    <listOfSpecies>
+      <species id="mRNA" initialAmount="5"   compartment="Cell"/>
+      <species id="P" initialAmount="10"   compartment="Cell"/>
+    </listOfSpecies>  
+
+    <listOfParameters>
+      <parameter id="theta1" value="1"/>
+      <parameter id="theta2" value="1"/>
+      <parameter id="theta3" value="1"/>
+      <parameter id="theta4" value="1"/>
+    </listOfParameters>
+
+    <listOfReactions>
+
+      <reaction id="Transcription" reversible="false">
+        <listOfProducts>
+          <speciesReference species="mRNA" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+		  <math xmlns="http://www.w3.org/1998/Math/MathML">
+		  <ci>theta1</ci>
+		  </math>
+		</kineticLaw>
+      </reaction>
+
+      <reaction id="mRNADegradation" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA" stoichiometry="1"/>       
+        </listOfReactants>
+        <kineticLaw>
+		  <math xmlns="http://www.w3.org/1998/Math/MathML">
+		  <apply>
+			<times/>
+			<ci>theta2</ci>
+			<ci>mRNA</ci>
+		  </apply>
+		  </math>
+		</kineticLaw>
+      </reaction>
+
+      <reaction id="Translation" reversible="false">
+        <listOfReactants>
+          <speciesReference species="mRNA" stoichiometry="1"/>
+        </listOfReactants>
+        <listOfProducts>
+          <speciesReference species="mRNA" stoichiometry="1"/>
+          <speciesReference species="P" stoichiometry="1"/>
+        </listOfProducts>
+        <kineticLaw>
+		  <math xmlns="http://www.w3.org/1998/Math/MathML">
+		  <apply>
+			<times/>
+			<ci>theta3</ci>
+			<ci>mRNA</ci>
+		  </apply>
+		  </math>
+		</kineticLaw>
+      </reaction>
+
+      <reaction id="PDegradation" reversible="false">
+        <listOfReactants>
+          <speciesReference species="P" stoichiometry="1"/>       
+        </listOfReactants>
+        <kineticLaw>
+		  <math xmlns="http://www.w3.org/1998/Math/MathML">
+		  <apply>
+			<times/>
+			<ci>theta4</ci>
+			<ci>P</ci>
+		  </apply>
+		  </math>
+		</kineticLaw>
+      </reaction>
+
+    </listOfReactions>
+
+  </model>
+</sbml>
+
+
